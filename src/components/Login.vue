@@ -38,8 +38,8 @@ async function submitLogin(event: SubmitEventPromise) {
   const results = await event
   if (results.valid) {
     res.value = await post_api('/login', {
-        username: username,
-        password: password
+        username: username.value,
+        password: password.value
     })
     // let res = await post_api("/login", {
     //   email: email.value,

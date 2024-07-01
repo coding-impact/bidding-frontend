@@ -7,27 +7,48 @@
         </v-card-text>
         <v-card-text class="pb-0">
 
-          <v-text-field :loading="loading" :disabled="loading" v-model="name" append-inner-icon="mdi-account" :rules="[required]" label="姓名"
-            variant="solo-filled" flat></v-text-field>
-          <v-text-field :loading="loading" :disabled="loading" v-model="bid" append-inner-icon="mdi-currency-usd" :rules="[isNumber]" :step="500" label="競標金額"
-            type="number" variant="solo-filled" flat></v-text-field>
-            <DisplayRes :res="res"></DisplayRes>
-            
+          <v-text-field :loading="loading" :disabled="loading" v-model="name" append-inner-icon="mdi-account"
+            :rules="[required]" label="姓名" variant="solo-filled" flat></v-text-field>
+          <v-text-field :loading="loading" :disabled="loading" v-model="bidding" append-inner-icon="mdi-currency-usd"
+            :rules="[isNumber]" :step="500" label="競標金額" type="number" variant="solo-filled" flat></v-text-field>
+          <DisplayRes :res="res"></DisplayRes>
+
         </v-card-text>
         <v-card-actions class="px-4 pb-4">
           <v-btn type="submit" block flat :loading="loading" :disabled="!formValid">送出</v-btn>
         </v-card-actions>
       </v-form>
     </v-card>
+    <v-card title="紀錄" subtitle="上次的競標資訊會記錄在這邊" style="max-width: 100%; width: 500px;" class="mb-4" v-if="index">
+      <v-card-text>
+
+        <v-table density="compact">
+          <tbody>
+            <tr>
+              <td>
+                編號
+              </td>
+              <td>{{index}}</td>
+            </tr>
+            <tr>
+              <td>驗證碼</td>
+              <td>{{verificationCode}}</td>
+            </tr>
+          </tbody>
+        </v-table>
+      </v-card-text>
+    </v-card>
     <router-link to="admin" class="text-caption text-grey">點此前往管理員頁面</router-link>
   </v-container>
 </template>
 
 <script lang="ts" setup>
-import { fetch_api } from '@/utils';
+import { fetch_api, post_api } from '@/utils';
 import { ref } from 'vue';
 import { SubmitEventPromise } from 'vuetify';
 import { required, isNumber } from '@/utils';
+import { onMounted } from 'vue';
+
 import DisplayRes from '@/components/DisplayRes.vue';
 
 
@@ -36,15 +57,26 @@ const loading = ref(false)
 const formValid = ref(false)
 
 const name = ref()
-const bid = ref()
+const bidding = ref(1000)
 
 const res = ref()
+
+const index = ref()
+const verificationCode = ref()
 
 async function submitBidding(event: SubmitEventPromise) {
   loading.value = true;
   const results = await event
   if (results.valid) {
-    res.value = await fetch_api('/test')
+    res.value = await post_api('/bidding', {
+      name: name.value,
+      bidding: Number(bidding.value)
+    })
+    if (res.value.type == 'success') {
+      localStorage.setItem('index', res.value.data.index)
+      localStorage.setItem('verificationCode', res.value.data.verificationCode)
+      await checkStorage()
+    }
     // let res = await post_api("/login", {
     //   email: email.value,
     //   password: password.value,
@@ -62,5 +94,12 @@ async function submitBidding(event: SubmitEventPromise) {
   }
   loading.value = false;
 }
+
+async function checkStorage() {
+  index.value = localStorage.getItem('index')
+  verificationCode.value = localStorage.getItem('verificationCode')
+}
+
+onMounted(checkStorage)
 
 </script>

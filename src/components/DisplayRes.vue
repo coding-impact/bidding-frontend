@@ -1,7 +1,10 @@
 <template>
-    <v-alert density="compact" :modelValue="res" variant="outlined" class="text-start" closable v-if="res" :type="res.type" :text="res.message"></v-alert>
-        
-    
+    <v-alert density="compact" :modelValue="res" variant="outlined" class="text-start " closable v-if="res"
+        :type="res.type">
+        <div>{{ res.message }}</div>
+    </v-alert>
+
+
 </template>
 <script lang="ts" setup>
 import { PropType } from 'vue';
@@ -9,4 +12,5 @@ import { PropType } from 'vue';
 defineProps({
     res: Object as PropType<any>
 })
- </script>
+</script>
+<style></style>
