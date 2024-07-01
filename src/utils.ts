@@ -33,8 +33,8 @@ async function handleResponse(response: Response) {
   }
 }
 
-const apiServerOrigin = 'http://localhost:62660'
-// const apiServerOrigin = 'https://bidding.kulimi.workers.dev'
+// const apiServerOrigin = 'http://localhost:62660'
+const apiServerOrigin = 'https://bidding.kulimi.workers.dev'
 
 export async function fetch_api(path: string = "") {
   const response = await fetch(`${apiServerOrigin}/api${path}`, {
