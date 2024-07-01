@@ -28,11 +28,11 @@
               <td>
                 編號
               </td>
-              <td>{{index}}</td>
+              <td>{{ index }}</td>
             </tr>
             <tr>
               <td>驗證碼</td>
-              <td>{{verificationCode}}</td>
+              <td>{{ verificationCode }}</td>
             </tr>
           </tbody>
         </v-table>
@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-import { fetch_api, post_api } from '@/utils';
+import { post_api } from '@/utils';
 import { ref } from 'vue';
 import { SubmitEventPromise } from 'vuetify';
 import { required, isNumber } from '@/utils';

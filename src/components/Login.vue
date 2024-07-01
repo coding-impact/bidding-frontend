@@ -41,6 +41,9 @@ async function submitLogin(event: SubmitEventPromise) {
         username: username.value,
         password: password.value
     })
+    if (res.value.type == 'success') {
+      emits('auth')
+    }
     // let res = await post_api("/login", {
     //   email: email.value,
     //   password: password.value,
