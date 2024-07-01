@@ -80,7 +80,7 @@ async function submitBidding(event: SubmitEventPromise) {
     if (res.value.type == 'success') {
       localStorage.setItem('index', res.value.data.index)
       localStorage.setItem('verificationCode', res.value.data.verificationCode)
-      localStorage.setItem('bidded', Number(bidding.value))
+      localStorage.setItem('bidded', bidding.value.toString())
       await checkStorage()
     }
     // let res = await post_api("/login", {

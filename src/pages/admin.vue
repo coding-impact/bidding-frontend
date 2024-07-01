@@ -106,7 +106,7 @@
 import { onMounted, ref } from 'vue';
 import DisplayRes from '@/components/DisplayRes.vue'
 
-import { fetch_api, post_api } from '../utils.ts';
+import { fetch_api, post_api } from '../utils';
 import Login from '@/components/Login.vue';
 
 const isAuth = ref(false)
