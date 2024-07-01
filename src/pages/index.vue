@@ -3,12 +3,12 @@
     <v-card title="競標籌碼" subtitle="籌碼至上主義教室" style="max-width: 100%; width: 500px;" class="mb-4">
       <v-form @submit.prevent="submitBidding" validate-on="input" v-model="formValid">
         <v-card-text>
-          當競標時間結束時，出價最高者將可得到點數。
+          {{ text ? text : '當競標時間結束時，出價最高者將可得到點數。' }}
         </v-card-text>
         <v-card-text class="pb-0">
 
           <v-text-field :loading="loading" :disabled="loading" v-model="name" append-inner-icon="mdi-account"
-            :rules="[required]" label="姓名" variant="solo-filled" flat></v-text-field>
+            :rules="[required]" label="姓名" placeholder="請務必填寫真實姓名" variant="solo-filled" flat></v-text-field>
           <v-text-field :loading="loading" :disabled="loading" v-model="bidding" append-inner-icon="mdi-currency-usd"
             :rules="[isNumber]" :step="500" label="競標金額" type="number" variant="solo-filled" flat></v-text-field>
           <DisplayRes :res="res"></DisplayRes>
@@ -34,6 +34,10 @@
               <td>驗證碼</td>
               <td>{{ verificationCode }}</td>
             </tr>
+            <tr>
+              <td>下標金額</td>
+              <td> {{ bidded }}</td>
+            </tr>
           </tbody>
         </v-table>
       </v-card-text>
@@ -43,7 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-import { post_api } from '@/utils';
+import { post_api, fetch_api } from '@/utils';
 import { ref } from 'vue';
 import { SubmitEventPromise } from 'vuetify';
 import { required, isNumber } from '@/utils';
@@ -51,7 +55,7 @@ import { onMounted } from 'vue';
 
 import DisplayRes from '@/components/DisplayRes.vue';
 
-
+const text = ref()
 
 const loading = ref(false)
 const formValid = ref(false)
@@ -63,6 +67,7 @@ const res = ref()
 
 const index = ref()
 const verificationCode = ref()
+const bidded = ref()
 
 async function submitBidding(event: SubmitEventPromise) {
   loading.value = true;
@@ -75,6 +80,7 @@ async function submitBidding(event: SubmitEventPromise) {
     if (res.value.type == 'success') {
       localStorage.setItem('index', res.value.data.index)
       localStorage.setItem('verificationCode', res.value.data.verificationCode)
+      localStorage.setItem('bidded', Number(bidding.value))
       await checkStorage()
     }
     // let res = await post_api("/login", {
@@ -98,8 +104,16 @@ async function submitBidding(event: SubmitEventPromise) {
 async function checkStorage() {
   index.value = localStorage.getItem('index')
   verificationCode.value = localStorage.getItem('verificationCode')
+  bidded.value = localStorage.getItem('bidded')
 }
 
-onMounted(checkStorage)
+async function load() {
+  await checkStorage()
+  text.value = (await fetch_api('/text')).data
+}
+
+onMounted(load)
+
+
 
 </script>
