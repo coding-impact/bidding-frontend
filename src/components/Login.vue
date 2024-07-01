@@ -43,6 +43,10 @@ async function submitLogin(event: SubmitEventPromise) {
     })
     if (res.value.type == 'success') {
       emits('auth')
+      // document.cookie = `token=${res.value.data.token}; username=${res.value.data.username}`
+      // localStorage.setItem('token', res.value.data.token)
+      // localStorage.setItem('username', res.value.data.username)
+      
     }
     // let res = await post_api("/login", {
     //   email: email.value,

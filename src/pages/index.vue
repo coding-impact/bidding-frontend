@@ -42,7 +42,7 @@
         </v-table>
       </v-card-text>
     </v-card>
-    <router-link to="admin" class="text-caption text-grey">點此前往管理員頁面</router-link>
+    <!-- <router-link to="admin" class="text-caption text-grey">點此前往管理員頁面</router-link> -->
   </v-container>
 </template>
 

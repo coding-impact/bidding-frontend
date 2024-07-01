@@ -40,18 +40,21 @@ export async function fetch_api(path: string = "") {
   const response = await fetch(`${apiServerOrigin}/api${path}`, {
     method: "GET",
     credentials: "include",
-
+    // headers: {
+      // Cookie: `token=${localStorage.getItem('token')}; username=${localStorage.getItem('username')}`
+    // }
   });
   return await handleResponse(response);
 }
 
-export async function post_api(path: string = "", data: object | null = null) {
+export async function post_api(path: string = "", data: any | null = null) {
+  
   const response = await fetch(`${apiServerOrigin}/api${path}`, {
     method: "POST",
     headers: {
-
       Accept: "application/json",
       "Content-Type": "application/json",
+      // Cookie: `token=${localStorage.getItem('token')}; username=${localStorage.getItem('username')}`
     },
     body: JSON.stringify(data),
     credentials: "include",
