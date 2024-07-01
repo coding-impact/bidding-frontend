@@ -8,7 +8,7 @@
         <v-card-text class="pb-0">
 
           <v-text-field :loading="loading" :disabled="loading" v-model="name" append-inner-icon="mdi-account"
-            :rules="[required]" label="姓名" placeholder="請務必填寫真實姓名" variant="solo-filled" flat></v-text-field>
+            :rules="[required]" label="名稱" placeholder="請填寫下標的名稱" variant="solo-filled" flat></v-text-field>
           <v-text-field :loading="loading" :disabled="loading" v-model="bidding" append-inner-icon="mdi-currency-usd"
             :rules="[isNumber]" :step="500" label="競標金額" type="number" variant="solo-filled" flat></v-text-field>
           <DisplayRes :res="res"></DisplayRes>

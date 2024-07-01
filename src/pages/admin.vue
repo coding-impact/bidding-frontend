@@ -45,10 +45,10 @@
                     </div>
 
 
-                    <v-list-subheader>目前下標情況</v-list-subheader>
+                    <v-list-subheader class="align-center">目前下標情況  <v-btn class="pl-4" variant="text" @click="loadList">重新載入</v-btn></v-list-subheader>
                     <div class="justify-center">
                         <v-data-table-virtual :headers="headers" :items="bidList" height="400" item-value="name"
-                            :loading="bidList == undefined">
+                            :loading="bidList == undefined || loading">
                             <template v-slot:loading>
                                 <div>
                                     正在載入...
@@ -117,7 +117,7 @@ const loading = ref(false)
 const res = ref()
 
 const headers = [
-    { title: '姓名', align: 'start', key: 'name' },
+    { title: '名稱', align: 'start', key: 'name' },
     { title: '編號', align: 'center', key: 'index' },
     { title: '下標金額', align: 'end', key: 'bidding' },
     { title: '驗證碼', align: 'center', key: 'verificationCode' },
@@ -135,14 +135,19 @@ async function afterLogin() {
     }
 }
 
+async function loadList() {
+    loading.value = true
+    bidList.value = (await fetch_api('/listBid')).data
+    loading.value = false
+}
 
 async function startup() {
     const res = await fetch_api('/setting')
     if (res && res.type == 'success') {
         isAuth.value = true;
         setting.value = res.data
-        bidList.value = (await fetch_api('/listBid')).data
         oldSetting.value = JSON.parse(JSON.stringify(setting.value))
+        await loadList()
     }
 }
 onMounted(startup)
