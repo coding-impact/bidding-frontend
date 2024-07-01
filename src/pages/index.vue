@@ -1,15 +1,15 @@
 <template>
   <v-container class="d-flex text-center justify-center align-center h-100 flex-column">
-    <v-card title="競標系統" subtitle="籌碼至上主義教室" width="500" class="mb-4">
+    <v-card title="競標系統" subtitle="籌碼至上主義教室" style="max-width: 100%; width: 500px;" class="mb-4">
       <v-form @submit.prevent="submitBidding" validate-on="input" v-model="formValid">
         <v-card-text>
           當競標時間結束時，出價最高者將可得到點數。
         </v-card-text>
         <v-card-text class="pb-0">
 
-          <v-text-field v-model="name" append-inner-icon="mdi-account" :rules="[required]" label="姓名"
+          <v-text-field :loading="loading" :disabled="loading" v-model="name" append-inner-icon="mdi-account" :rules="[required]" label="姓名"
             variant="solo-filled" flat></v-text-field>
-          <v-text-field v-model="bid" append-inner-icon="mdi-currency-usd" :rules="[isNumber]" :step="500" label="競標金額"
+          <v-text-field :loading="loading" :disabled="loading" v-model="bid" append-inner-icon="mdi-currency-usd" :rules="[isNumber]" :step="500" label="競標金額"
             type="number" variant="solo-filled" flat></v-text-field>
             
         </v-card-text>
@@ -23,6 +23,7 @@
 </template>
 
 <script lang="ts" setup>
+import { fetch_api } from '@/utils';
 import { ref } from 'vue';
 import { SubmitEventPromise } from 'vuetify';
 
@@ -61,6 +62,7 @@ async function submitBidding(event: SubmitEventPromise) {
   loading.value = true;
   const results = await event
   if (results.valid) {
+    console.log(await fetch_api('/test'))
     // let res = await post_api("/login", {
     //   email: email.value,
     //   password: password.value,
@@ -76,7 +78,7 @@ async function submitBidding(event: SubmitEventPromise) {
     //   }
     // }
   }
-  // loading.value = false;
+  loading.value = false;
 }
 
 </script>
