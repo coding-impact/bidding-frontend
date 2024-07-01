@@ -96,7 +96,7 @@
                 </v-card-text>
             </template>
             <template v-else>
-                <Login @auth="isAuth = true"></Login>
+                <Login @auth="afterLogin"></Login>
             </template>
         </v-card>
         <router-link to="/" class="text-caption text-grey">點此前往競標頁面</router-link>
@@ -129,7 +129,11 @@ const bidList = ref()
 // { name: 'asdf;jhasdf', bidding: 1233123, index: 3, verificationCode: 'F8S13r' }
 // ])
 
-
+async function afterLogin() {
+    if (isAuth.value == false) {
+        await startup()
+    }
+}
 
 
 async function startup() {
